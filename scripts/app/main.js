@@ -1,7 +1,7 @@
 define([
   'app/models/TodoItem',
   'lib/text!templates/todoItem/todoItem.html',
-  'lib/mustache.min',
+  'lib/mustache.min'
 ], function (TodoItem, todoItemTemplate, mustache) {
   var readLocalStorage = function () {
     return JSON.parse(localStorage.getItem('todoItems'));
