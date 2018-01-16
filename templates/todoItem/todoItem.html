@@ -1,8 +1,8 @@
-<tr class="todo__item task task-{{id}}">
+<tr class="todo__item task task-{{id}} state-{{state}}">
   <td class="task__select"><input type="checkbox"></td>
   <td class="task__title"><h6>{{title}}</h6></td>
   <td class="task__description">{{description}}</td>
-  <td class="task__state"><span class="badge badge-{{suffix}}">{{state}}</span></td>
+  <td class="task__state"><span class="badge badge-{{suffix}}">{{htmlState}}</span></td>
   <td class="task__action action">
     <button type="button" class="btn btn-warning action__edit" data-id="{{id}}">Edit</button>
     <button type="button" class="btn btn-danger action__delete" data-id="{{id}}">Delete</button>

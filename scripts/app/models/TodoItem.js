@@ -5,42 +5,56 @@ define(function () {
     this.title = options.title || '';
     this.description = options.description || '';
     this.id = options.id;
-    this.state = this.contants.state.NEW;
-    this.suffix = this.contants.suffix.NEW;
+    this.state = this.contants.state.NEW.data;
+    this.htmlState = this.contants.state.NEW.html;
+    this.suffix = this.contants.state.NEW.suffix;
 
     this.setNewState = this.setNewState.bind(this);
   };
 
   TodoItem.prototype.contants = {
     state: {
-      NEW: 'New',
-      IN_PROGRESS: 'In progress',
-      COMPLETED: 'Completed',
-      ARCHIVED: 'Archived'
-    },
-    suffix: {
-      NEW: 'primary',
-      IN_PROGRESS: 'info',
-      COMPLETED: 'success',
-      ARCHIVED: 'secondary'
-    } };
+      NEW: {
+        data :'new',
+        suffix: 'primary',
+        html: 'New'
+      },
+      IN_PROGRESS: {
+        data:'in-progress',
+        suffix: 'info',
+        html: 'In progress'
+      },
+      COMPLETED: {
+        data: 'completed',
+        suffix: 'success',
+        html: 'Completed'
+      },
+      ARCHIVED:{
+        data: 'archived',
+        suffix: 'secondary',
+        html: 'Archived'
+      }
+    }
+  };
 
   TodoItem.prototype.setNewState = function (state) {
-    if (state === 'new') {
-      this.state = this.contants.state.NEW;
-      this.suffix = this.contants.suffix.NEW
+    this.state = state;
+
+    if (state === this.contants.state.NEW.data) {
+      this.suffix = this.contants.state.NEW.suffix;
+      this.htmlState = this.contants.state.NEW.html;
     }
-    if (state === 'in-progress') {
-      this.state = this.contants.state.IN_PROGRESS;
-      this.suffix = this.contants.suffix.IN_PROGRESS;
+    if (state === this.contants.state.IN_PROGRESS.data) {
+      this.suffix = this.contants.state.IN_PROGRESS.suffix;
+      this.htmlState = this.contants.state.IN_PROGRESS.html;
     }
-    if (state === 'completed') {
-      this.state = this.contants.state.COMPLETED;
-      this.suffix = this.contants.suffix.COMPLETED;
+    if (state === this.contants.state.COMPLETED.data) {
+      this.suffix = this.contants.state.COMPLETED.suffix;
+      this.htmlState = this.contants.state.COMPLETED.html;
     }
-    if (state === 'archived') {
-      this.state = this.contants.state.ARCHIVED;
-      this.suffix = this.contants.suffix.ARCHIVED;
+    if (state === this.contants.state.ARCHIVED.data) {
+      this.suffix = this.contants.state.ARCHIVED.suffix;
+      this.htmlState = this.contants.state.ARCHIVED.html;
     }
   };
 

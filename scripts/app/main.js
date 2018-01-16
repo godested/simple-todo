@@ -16,20 +16,22 @@ define([
 
   var form = document.querySelector('.new-todo');
   var table = document.querySelector('.todo');
+  var filter = document.querySelector('.filter');
   var title = document.querySelector('.new-todo__title');
   var description = document.querySelector('.new-todo__description');
   var itemsContainer = document.querySelector('.todo__container');
 
-  var render = function () {
-    itemsContainer.innerHTML = todoItems.map(function (item) {
+  var render = function (items) {
+    var todoList = items || todoItems;
+    itemsContainer.innerHTML = todoList.map(function (item) {
       return mustache.render(todoItemTemplate, item);
     }).join('');
   };
 
-  var update = function () {
+  var update = function (items) {
     writeLocalStorage();
     todoItems = readLocalStorage();
-    render();
+    render(items);
   };
 
   var handleSubmit = function (ev) {
@@ -63,16 +65,16 @@ define([
     title.innerHTML = '<input type="text" class="form-control edit-title-' + id + '" value="' + todoItems[id].title + '">';
     state.innerHTML = ['<select class="custom-select edit-state-' + id + '"">',
       '<option value="new" ',
-      getState('New'),
+      getState('new'),
       '>New</option>',
       '<option value="in-progress" ',
-      getState('In progress'),
+      getState('in-progress'),
       '>In progress</option>',
       '<option value="completed" ',
-      getState('Completed'),
+      getState('completed'),
       '>Completed</option>',
       '<option value="archived" ',
-      getState('Archived'),
+      getState('archived'),
       '>Archived</option>',
       '</select>'].join('');
     description.innerHTML = '<input type="text" class="form-control edit-description-' + id + '"" value="' + todoItems[id].description + '">';
@@ -96,7 +98,7 @@ define([
 
     button.addEventListener('click', parseData);
   };
-  
+
   var handleClickOnTable = function (ev) {
     if (ev.target.className.indexOf('action__delete') !== -1) {
       var id = ev.target.dataset.id;
@@ -113,9 +115,23 @@ define([
     }
   };
 
+  var handleFilterChange = function (ev) {
+    var state = ev.target.value;
+
+    if(state === 'all') {
+      update();
+      return;
+    }
+
+    update(todoItems.filter(function (item) {
+      return item.state === state;
+    }));
+  };
+
 
   form.addEventListener('submit', handleSubmit);
   table.addEventListener('click', handleClickOnTable);
+  filter.addEventListener('change', handleFilterChange);
 
   render();
 });
