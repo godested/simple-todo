@@ -52,7 +52,7 @@
         <div class="card selected-action">
           <h3>Action with selected</h3>
           <div class="form-group">
-            <select class="custom-select filter__value" id="selected-action__state">
+            <select class="custom-select selected-action__state" id="selected-action__state">
               <option value="not-chosen">Chose...</option>
               <option value="delete">Delete</option>
               <option value="new">New</option>
@@ -61,7 +61,7 @@
               <option value="archived">Archived</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-success new-todo__button">Done</button>
+          <button type="submit" class="btn btn-success selected-action__button">Done</button>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@
           <table class="table table-bordered todo">
             <thead class="thead-dark thead">
               <tr>
-                <th scope="col"><input type="checkbox" class="todo__select-all"></th>
+                <th scope="col"><input type="checkbox" class="select-all"></th>
                 <th scope="col">Title</th>
                 <th scope="col">Description</th>
                 <th scope="col">State</th>

@@ -20,6 +20,8 @@ define([
   var title = document.querySelector('.new-todo__title');
   var description = document.querySelector('.new-todo__description');
   var itemsContainer = document.querySelector('.todo__container');
+  var selectAll = document.querySelector('.select-all');
+  var selectAction = document.querySelector('.selected-action__button');
 
   var render = function (items) {
     var todoList = items || todoItems;
@@ -51,10 +53,10 @@ define([
   var editTodo = function (id) {
     var itemForEdit = document.querySelector('.task-' + id);
 
-    var title =  itemForEdit.querySelector('.task__title');
-    var description =  itemForEdit.querySelector('.task__description');
-    var state =  itemForEdit.querySelector('.task__state');
-    var action =  itemForEdit.querySelector('.task__action');
+    var title = itemForEdit.querySelector('.task__title');
+    var description = itemForEdit.querySelector('.task__description');
+    var state = itemForEdit.querySelector('.task__state');
+    var action = itemForEdit.querySelector('.task__action');
 
     var getState = function (state) {
       if (todoItems[id].state === state) {
@@ -63,6 +65,7 @@ define([
     };
 
     title.innerHTML = '<input type="text" class="form-control edit-title-' + id + '" value="' + todoItems[id].title + '">';
+    description.innerHTML = '<input type="text" class="form-control edit-description-' + id + '"" value="' + todoItems[id].description + '">';
     state.innerHTML = ['<select class="custom-select edit-state-' + id + '"">',
       '<option value="new" ',
       getState('new'),
@@ -77,7 +80,6 @@ define([
       getState('archived'),
       '>Archived</option>',
       '</select>'].join('');
-    description.innerHTML = '<input type="text" class="form-control edit-description-' + id + '"" value="' + todoItems[id].description + '">';
     action.innerHTML = '<button type="button" class="btn btn-success edit-button-' + id + '">Done</button>';
 
     var button = itemForEdit.querySelector('.edit-button-' + id);
@@ -91,6 +93,7 @@ define([
 
       todoItems[id].setNewState(itemForEdit.querySelector('.edit-state-' + id).value);
 
+      console.log('---->', todoItems[id]);
       button.removeEventListener('click', parseData);
 
       update();
@@ -111,14 +114,14 @@ define([
     }
 
     if (ev.target.className.indexOf('action__edit') !== -1) {
-      editTodo(ev.target.dataset.id)
+      editTodo(ev.target.dataset.id);
     }
   };
 
   var handleFilterChange = function (ev) {
     var state = ev.target.value;
 
-    if(state === 'all') {
+    if (state === 'all') {
       update();
       return;
     }
@@ -128,10 +131,42 @@ define([
     }));
   };
 
+  var handleSelectAll = function (ev) {
+    var items = document.querySelectorAll('.select-item');
+    if (selectAll.checked) {
+      for (var i = 0; i < items.length; i++) {
+        items[i].checked = true;
+      }
+    } else {
+      for (var i = 0; i < items.length; i++) {
+        items[i].checked = false;
+      }
+    }
+  };
+
+  var handleSelectAction = function (ev) {
+    ev.preventDefault();
+    var state = document.querySelector('.selected-action__state').value;
+
+    if (state === 'delete') {
+      todoItems = [];
+      update();
+      return;
+    }
+
+    todoItems.forEach(function (item) {
+      console.log('---->', item);
+    });
+
+    update();
+  };
+
 
   form.addEventListener('submit', handleSubmit);
   table.addEventListener('click', handleClickOnTable);
   filter.addEventListener('change', handleFilterChange);
+  selectAll.addEventListener('click', handleSelectAll);
+  selectAction.addEventListener('click', handleSelectAction);
 
   render();
 });
