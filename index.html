@@ -6,8 +6,90 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>TODO</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./styles/styles.css">
 </head>
 <body>
 
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="navbar navbar-dark bg-dark col">
+        <a class="navbar-brand" href="./">Todo</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-8">
+        <form class="card new-todo">
+          <h3>New todo</h3>
+          <div class="form-group">
+            <label for="new-todo__title">Title</label>
+            <input type="text" class="form-control new-todo__title" id="new-todo__title" placeholder="Enter title" required>
+          </div>
+          <div class="form-group">
+            <label for="new-todo__description">Description</label>
+            <textarea class="form-control new-todo__description" id="new-todo__description"
+                      placeholder="Enter description" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success new-todo__button">Add</button>
+        </form>
+      </div>
+      <div class="col-4 right-panel">
+        <div class="card">
+          <h3>Filter</h3>
+          <div class="input-group filter">
+            <select class="custom-select filter__value" id="filter__select">
+              <option value="all">All</option>
+              <option value="new">New</option>
+              <option value="in-progress">In progress</option>
+              <option value="completed">Completed</option>
+              <option value="archived">Archived</option>
+            </select>
+            <div class="input-group-append">
+              <button class="btn btn-outline-primary filter__button" type="button">Chose</button>
+            </div>
+          </div>
+        </div>
+        <div class="card selected-action">
+          <h3>Action with selected</h3>
+          <div class="form-group">
+            <select class="custom-select filter__value" id="selected-action__state">
+              <option value="not-chosen">Chose...</option>
+              <option value="delete">Delete</option>
+              <option value="new">New</option>
+              <option value="in-progress">In progress</option>
+              <option value="completed">Completed</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success new-todo__button">Done</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <h3>List</h3>
+          <table class="table table-bordered todo">
+            <thead class="thead-dark thead">
+              <tr>
+                <th scope="col"><input type="checkbox" class="todo__select-all"></th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">State</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody class="todo__container">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./scripts/lib/require.js" data-main="./scripts/app.js"></script>
 </body>
 </html>

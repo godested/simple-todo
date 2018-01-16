@@ -1,0 +1,17 @@
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.task__action, .task__select, .task__state {
+  text-align: center;
+}
+
+.thead {
+  text-align: center;
+}
