@@ -141,15 +141,16 @@ define([
 
     for (var i = 0; i < checkboxes.length; i++) {
       if (checkboxes[i].checked) {
+        var item = todoItems[checkboxes[i].dataset.id];
         if (state === 'delete') {
           todoItems = todoItems.filter(function (todo) {
-            console.log('---->', todo, todoItems[checkboxes[i].dataset.id]);
-            return todo.id !== todoItems[checkboxes[i].dataset.id].id;
+            console.log('---->', todo, item);
+            return todo.id !== item.id;
           });
           continue;
         }
 
-        todoItems[checkboxes[i].dataset.id] = new TodoItem(todoItems[checkboxes[i].dataset.id]);
+        todoItems[checkboxes[i].dataset.id] = new TodoItem(item);
         todoItems[checkboxes[i].dataset.id].setNewState(state);
       }
     }
