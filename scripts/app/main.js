@@ -62,12 +62,6 @@ define([
     var state = itemForEdit.querySelector('.task__state');
     var action = itemForEdit.querySelector('.task__action');
 
-    var getState = function (state) {
-      if (todoItems[id].state === state) {
-        return 'selected'
-      }
-    };
-
     title.innerHTML = mustache.render(titleTemplate, todoItems[id]);
     description.innerHTML = mustache.render(descriptionTemplate, todoItems[id]);
     state.innerHTML = mustache.render(stateTemplate, todoItems[id]);
