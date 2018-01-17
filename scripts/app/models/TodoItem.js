@@ -39,7 +39,6 @@ define(function () {
 
   TodoItem.prototype.setNewState = function (state) {
     this.state = state;
-
     if (state === this.contants.state.NEW.data) {
       this.suffix = this.contants.state.NEW.suffix;
       this.htmlState = this.contants.state.NEW.html;

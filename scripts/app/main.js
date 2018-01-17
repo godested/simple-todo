@@ -148,15 +148,26 @@ define([
     ev.preventDefault();
     var state = document.querySelector('.selected-action__state').value;
 
-    if (state === 'delete') {
-      todoItems = [];
-      update();
+    if (state === 'not-chosen') {
       return;
     }
 
-    todoItems.forEach(function (item) {
-      console.log('---->', item);
-    });
+    var checkboxes = document.querySelectorAll('.select-item');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        if (state === 'delete') {
+          todoItems = todoItems.filter(function (todo) {
+            console.log('---->', todo, todoItems[checkboxes[i].dataset.id]);
+            return todo.id !== todoItems[checkboxes[i].dataset.id].id;
+          });
+          continue;
+        }
+
+        todoItems[checkboxes[i].dataset.id] = new TodoItem(todoItems[checkboxes[i].dataset.id]);
+        todoItems[checkboxes[i].dataset.id].setNewState(state);
+      }
+    }
 
     update();
   };
