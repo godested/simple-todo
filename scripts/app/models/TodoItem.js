@@ -5,22 +5,22 @@ define(function () {
     this.title = options.title || '';
     this.description = options.description || '';
     this.id = options.id;
-    this.state = this.contants.state.NEW.data;
-    this.htmlState = this.contants.state.NEW.html;
-    this.suffix = this.contants.state.NEW.suffix;
+    this.state = this.constants.state.NEW.data;
+    this.htmlState = this.constants.state.NEW.html;
+    this.suffix = this.constants.state.NEW.suffix;
 
     this.setNewState = this.setNewState.bind(this);
   };
 
-  TodoItem.prototype.contants = {
+  TodoItem.prototype.constants = {
     state: {
       NEW: {
-        data :'new',
+        data: 'new',
         suffix: 'primary',
         html: 'New'
       },
       IN_PROGRESS: {
-        data:'in-progress',
+        data: 'in-progress',
         suffix: 'info',
         html: 'In progress'
       },
@@ -29,7 +29,7 @@ define(function () {
         suffix: 'success',
         html: 'Completed'
       },
-      ARCHIVED:{
+      ARCHIVED: {
         data: 'archived',
         suffix: 'secondary',
         html: 'Archived'
@@ -39,21 +39,21 @@ define(function () {
 
   TodoItem.prototype.setNewState = function (state) {
     this.state = state;
-    if (state === this.contants.state.NEW.data) {
-      this.suffix = this.contants.state.NEW.suffix;
-      this.htmlState = this.contants.state.NEW.html;
+    if (state === this.constants.state.NEW.data) {
+      this.suffix = this.constants.state.NEW.suffix;
+      this.htmlState = this.constants.state.NEW.html;
     }
-    if (state === this.contants.state.IN_PROGRESS.data) {
-      this.suffix = this.contants.state.IN_PROGRESS.suffix;
-      this.htmlState = this.contants.state.IN_PROGRESS.html;
+    if (state === this.constants.state.IN_PROGRESS.data) {
+      this.suffix = this.constants.state.IN_PROGRESS.suffix;
+      this.htmlState = this.constants.state.IN_PROGRESS.html;
     }
-    if (state === this.contants.state.COMPLETED.data) {
-      this.suffix = this.contants.state.COMPLETED.suffix;
-      this.htmlState = this.contants.state.COMPLETED.html;
+    if (state === this.constants.state.COMPLETED.data) {
+      this.suffix = this.constants.state.COMPLETED.suffix;
+      this.htmlState = this.constants.state.COMPLETED.html;
     }
-    if (state === this.contants.state.ARCHIVED.data) {
-      this.suffix = this.contants.state.ARCHIVED.suffix;
-      this.htmlState = this.contants.state.ARCHIVED.html;
+    if (state === this.constants.state.ARCHIVED.data) {
+      this.suffix = this.constants.state.ARCHIVED.suffix;
+      this.htmlState = this.constants.state.ARCHIVED.html;
     }
   };
 

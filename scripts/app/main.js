@@ -1,8 +1,12 @@
 define([
   'app/models/TodoItem',
   'lib/text!templates/todoItem/todoItem.html',
+  'lib/text!templates/editItem/title.html',
+  'lib/text!templates/editItem/description.html',
+  'lib/text!templates/editItem/state.html',
+  'lib/text!templates/editItem/action.html',
   'lib/mustache.min'
-], function (TodoItem, todoItemTemplate, mustache) {
+], function (TodoItem, todoItemTemplate, titleTemplate, descriptionTemplate, stateTemplate, actionTemplate, mustache) {
   var readLocalStorage = function () {
     return JSON.parse(localStorage.getItem('todoItems'));
   };
@@ -64,23 +68,10 @@ define([
       }
     };
 
-    title.innerHTML = '<input type="text" class="form-control edit-title-' + id + '" value="' + todoItems[id].title + '">';
-    description.innerHTML = '<input type="text" class="form-control edit-description-' + id + '"" value="' + todoItems[id].description + '">';
-    state.innerHTML = ['<select class="custom-select edit-state-' + id + '"">',
-      '<option value="new" ',
-      getState('new'),
-      '>New</option>',
-      '<option value="in-progress" ',
-      getState('in-progress'),
-      '>In progress</option>',
-      '<option value="completed" ',
-      getState('completed'),
-      '>Completed</option>',
-      '<option value="archived" ',
-      getState('archived'),
-      '>Archived</option>',
-      '</select>'].join('');
-    action.innerHTML = '<button type="button" class="btn btn-success edit-button-' + id + '">Done</button>';
+    title.innerHTML = mustache.render(titleTemplate, todoItems[id]);
+    description.innerHTML = mustache.render(descriptionTemplate, todoItems[id]);
+    state.innerHTML = mustache.render(stateTemplate, todoItems[id]);
+    action.innerHTML = mustache.render(actionTemplate, todoItems[id]);
 
     var button = itemForEdit.querySelector('.edit-button-' + id);
 
