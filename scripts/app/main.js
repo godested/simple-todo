@@ -139,6 +139,7 @@ define([
 
     var checkboxes = document.querySelectorAll('.select-item');
 
+
     for (var i = 0; i < checkboxes.length; i++) {
       if (checkboxes[i].checked) {
         var item = todoItems[checkboxes[i].dataset.id];
