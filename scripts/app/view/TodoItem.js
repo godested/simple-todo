@@ -68,7 +68,8 @@ define(['app/models/TodoItem',
     }
 
     if (ev.target === this.deleteButton) {
-      console.log('---->', 'delete');
+      var data = this.model.id;
+      this.mediator.notify('deleteItem', data)
     }
 
     return this;

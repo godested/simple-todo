@@ -22,13 +22,17 @@ define([
     this.addNewItem = this.addNewItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
     this.createItemNode = this.createItemNode.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   };
 
   TodoCollectionView.prototype.fetchData = function () {
     console.log('---->', 'fetch');
     var data = JSON.parse(localStorage.getItem('todoItems')) || [];
+    debugger;
     var mediatorInstance = this.mediator;
+    var id = 0;
     this.items = data.map(function (item) {
+      item.model.id = id++;
       return new TodoItemView({
         item: item.model,
         mediator: mediatorInstance
@@ -40,7 +44,15 @@ define([
 
   TodoCollectionView.prototype.saveData = function () {
     console.log('---->', 'saving', this.items);
-    localStorage.setItem('todoItems', JSON.stringify(this.items) || []);
+    var id = 0;
+    var mediatorInstance = this.mediator;
+    localStorage.setItem('todoItems', JSON.stringify(this.items.map(function (item) {
+      item.model.id = id++;
+      return new TodoItemView({
+        item: item.model,
+        mediator: mediatorInstance
+      });
+    })) || []);
 
     return this;
   };
@@ -54,9 +66,10 @@ define([
     this.items.push(todo);
 
     var createItem = this.createItemNode;
-    this.itemContainer.appendChild(createItem(mustache.render(todoItemTemplate, todo.model), todo.model.id));
 
+    this.itemContainer.appendChild(createItem(mustache.render(todoItemTemplate, todo.model), todo.model.id));
     todo.delegateEvent();
+    
 
     this.saveData();
 
@@ -65,7 +78,7 @@ define([
 
   TodoCollectionView.prototype.createItemNode = function (html, id) {
     var item = document.createElement('tr');
-    item.className = 'todo__item task task-' + id + ' state-' + this.items[id].model.state;
+    item.className = 'todo__item task task-' + id;
     item.innerHTML = html;
 
     return item;
@@ -92,9 +105,24 @@ define([
     return this;
   };
 
+  TodoCollectionView.prototype.deleteItem = function (ev, data) {
+    this.items = this.items.filter(function (item) {
+      console.log('---->',  item.model.id,  data);
+      return item.model.id !== data;
+    });
+    console.log('---->', 'deleting');
+
+    this.saveData();
+
+    this.itemContainer.removeChild(this.itemContainer.querySelector('.task-' + data));
+
+    return this;
+  };
+
   TodoCollectionView.prototype.delegateEvent = function () {
     this.mediator.subscribe('newItem', this.addNewItem);
     this.mediator.subscribe('editItem', this.updateItem);
+    this.mediator.subscribe('deleteItem', this.deleteItem);
     this.formView.delegateEvent();
 
     this.items.forEach(function (item) {
