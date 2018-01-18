@@ -11,7 +11,6 @@ define(['app/models/TodoItem',
                                  mustache) {
   var TodoItemView = function (options) {
     this.model = new TodoItemModel(options.item || {});
-    this.listContainer = options.listContainer;
     this.mediator = options.mediator || {};
 
     this.getDOMNodes = this.getDOMNodes.bind(this);
@@ -21,22 +20,22 @@ define(['app/models/TodoItem',
   };
 
   TodoItemView.prototype.getDOMNodes = function () {
-    this.listContainer = document.querySelector('.task-' + this.model.id);
-    this.editButton = this.listContainer.querySelector('.action__edit');
-    this.deleteButton = this.listContainer.querySelector('.action__delete');
-    this.title = this.listContainer.querySelector('.task__title');
-    this.description = this.listContainer.querySelector('.task__description');
-    this.state = this.listContainer.querySelector('.task__state');
-    this.action = this.listContainer.querySelector('.task__action');
+    this.itemContainer = document.querySelector('.task-' + this.model.id);
+    this.editButton = this.itemContainer.querySelector('.action__edit');
+    this.deleteButton = this.itemContainer.querySelector('.action__delete');
+    this.title = this.itemContainer.querySelector('.task__title');
+    this.description = this.itemContainer.querySelector('.task__description');
+    this.state = this.itemContainer.querySelector('.task__state');
+    this.action = this.itemContainer.querySelector('.task__action');
 
 
     return this;
   };
 
   TodoItemView.prototype.parseData = function () {
-    var titleValue = this.listContainer.querySelector('.edit-title').value;
-    var descriptionValue = this.listContainer.querySelector('.edit-description').value;
-    var stateValue = this.listContainer.querySelector('.edit-state').value;
+    var titleValue = this.itemContainer.querySelector('.edit-title').value;
+    var descriptionValue = this.itemContainer.querySelector('.edit-description').value;
+    var stateValue = this.itemContainer.querySelector('.edit-state').value;
 
     var data = {
       title: titleValue,
@@ -56,7 +55,7 @@ define(['app/models/TodoItem',
     this.state.innerHTML = mustache.render(stateTemplate, this.model);
     this.action.innerHTML = mustache.render(actionTemplate, this.model);
 
-    var submitButton = this.listContainer.querySelector('.edit-button');
+    var submitButton = this.itemContainer.querySelector('.edit-button');
 
     submitButton.addEventListener('click', this.parseData);
 
@@ -77,7 +76,7 @@ define(['app/models/TodoItem',
 
   TodoItemView.prototype.delegateEvent = function () {
     this.getDOMNodes();
-    this.listContainer.addEventListener('click', this.handleClick);
+    this.itemContainer.addEventListener('click', this.handleClick);
 
     return this;
   };

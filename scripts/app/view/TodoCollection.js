@@ -13,7 +13,7 @@ define([
     this.items = [];
     this.mediator = new Mediator();
     this.formView = new TodoFormView({mediator: this.mediator});
-    this.listContainer = document.querySelector('.todo__container');
+    this.itemContainer = document.querySelector('.todo__container');
 
     this.render = this.render.bind(this);
     this.delegateEvent = this.delegateEvent.bind(this);
@@ -54,7 +54,7 @@ define([
     this.items.push(todo);
 
     var createItem = this.createItemNode;
-    this.listContainer.appendChild(createItem(mustache.render(todoItemTemplate, todo.model), todo.model.id));
+    this.itemContainer.appendChild(createItem(mustache.render(todoItemTemplate, todo.model), todo.model.id));
 
     this.saveData();
 
@@ -75,13 +75,14 @@ define([
       mediator: this.mediator
     });
 
-
-    this.listContainer.replaceChild(
+    this.itemContainer.replaceChild(
       this.createItemNode(mustache.render(todoItemTemplate, this.items[item.id].model), item.id),
-      this.listContainer.querySelector('.task-' + item.id)
+      this.itemContainer.querySelector('.task-' + item.id)
     );
 
     this.saveData();
+  console.log('---->', this.items[item.id]);
+    this.items[item.id].delegateEvent();
 
     return this;
   };
@@ -100,7 +101,7 @@ define([
 
   TodoCollectionView.prototype.renderList = function () {
     var todoList = this.items || [];
-    var container = this.listContainer;
+    var container = this.itemContainer;
     var createItem = this.createItemNode;
     todoList.forEach(function (item) {
       console.log('---->', item.model);
