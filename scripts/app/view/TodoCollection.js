@@ -56,6 +56,8 @@ define([
     var createItem = this.createItemNode;
     this.itemContainer.appendChild(createItem(mustache.render(todoItemTemplate, todo.model), todo.model.id));
 
+    todo.delegateEvent();
+
     this.saveData();
 
     return this;
@@ -70,19 +72,22 @@ define([
   };
 
   TodoCollectionView.prototype.updateItem = function (ev, item) {
+    console.log('---->', item);
     this.items[item.id] = new TodoItemView({
       item: item,
       mediator: this.mediator
     });
+
+    console.log('---->', this.items[item.id]);
 
     this.itemContainer.replaceChild(
       this.createItemNode(mustache.render(todoItemTemplate, this.items[item.id].model), item.id),
       this.itemContainer.querySelector('.task-' + item.id)
     );
 
-    this.saveData();
-  console.log('---->', this.items[item.id]);
     this.items[item.id].delegateEvent();
+
+    this.saveData();
 
     return this;
   };

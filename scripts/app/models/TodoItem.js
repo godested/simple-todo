@@ -4,9 +4,12 @@ define(function () {
   var TodoItemModel = function (options) {
     this.title = options.title || '';
     this.description = options.description || '';
-    this.id = options.id ||id++;
-    this.state = this.constants.state.NEW;
+    this.id = (options.id === undefined) ? id: options.id ;
+    this.state = options.state || this.constants.state.NEW;
     this.html = this.getHTML();
+
+    id++;
+    console.log('---->', this.id);
 
     this.getHTML = this.getHTML.bind(this);
   };
