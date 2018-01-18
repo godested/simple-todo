@@ -1,9 +1,9 @@
 define(function () {
-  var TodoFormView = function () {
+  var TodoFormView = function (options) {
     this.form = document.querySelector('.new-todo');
     this.title = document.querySelector('.new-todo__title');
     this.description = document.querySelector('.new-todo__description');
-    this.mediator = {};
+    this.mediator = options.mediator || {};
 
     this.parseData = this.parseData.bind(this);
   };

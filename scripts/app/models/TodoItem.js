@@ -4,7 +4,7 @@ define(function () {
   var TodoItemModel = function (options) {
     this.title = options.title || '';
     this.description = options.description || '';
-    this.id =   id++;
+    this.id = options.id ||id++;
     this.state = this.constants.state.NEW;
     this.html = this.getHTML();
 

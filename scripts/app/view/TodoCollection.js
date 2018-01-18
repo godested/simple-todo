@@ -9,26 +9,30 @@ define([
              todoItemTemplate,
              mustache,
              Mediator) {
-
   var TodoCollectionView = function () {
     this.items = [];
     this.mediator = new Mediator();
-    this.formView = new TodoFormView();
-    this.container = document.querySelector('.todo__container');
+    this.formView = new TodoFormView({mediator: this.mediator});
+    this.listContainer = document.querySelector('.todo__container');
 
     this.render = this.render.bind(this);
-    this.setMediator = this.setMediator.bind(this);
     this.delegateEvent = this.delegateEvent.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.saveData = this.saveData.bind(this);
     this.addNewItem = this.addNewItem.bind(this);
+    this.updateItem = this.updateItem.bind(this);
+    this.createItemNode = this.createItemNode.bind(this);
   };
 
   TodoCollectionView.prototype.fetchData = function () {
     console.log('---->', 'fetch');
     var data = JSON.parse(localStorage.getItem('todoItems')) || [];
+    var mediatorInstance = this.mediator;
     this.items = data.map(function (item) {
-      return new TodoItemView(item.model);
+      return new TodoItemView({
+        item: item.model,
+        mediator: mediatorInstance
+      });
     });
 
     return this;
@@ -38,52 +42,82 @@ define([
     console.log('---->', 'saving', this.items);
     localStorage.setItem('todoItems', JSON.stringify(this.items) || []);
 
-
-    return this;
-  };
-
-  TodoCollectionView.prototype.setMediator = function () {
-    this.formView.mediator = this.mediator;
-
     return this;
   };
 
   TodoCollectionView.prototype.addNewItem = function (ev, item) {
-    this.items.push(new TodoItemView(item));
+    var todo = new TodoItemView({
+      item: item,
+      mediator: this.mediator
+    });
 
-    this.updateList();
+    this.items.push(todo);
+
+    var createItem = this.createItemNode;
+    this.listContainer.appendChild(createItem(mustache.render(todoItemTemplate, todo.model), todo.model.id));
+
     this.saveData();
+
+    return this;
+  };
+
+  TodoCollectionView.prototype.createItemNode = function (html, id) {
+    var item = document.createElement('tr');
+    console.log('---->', )
+    item.className = 'todo__item task task-' + id + ' state-' + this.items[id].model.state;
+    item.innerHTML = html;
+
+    return item;
+  };
+
+  TodoCollectionView.prototype.updateItem = function (ev, item) {
+    this.items[item.id] = new TodoItemView({
+      item: item,
+      mediator: this.mediator
+    });
+
+
+    this.listContainer.replaceChild(
+      this.createItemNode(mustache.render(todoItemTemplate, this.items[item.id].model), item.id),
+      this.listContainer.querySelector('.task-' + item.id)
+    );
+
+    this.saveData();
+
     return this;
   };
 
   TodoCollectionView.prototype.delegateEvent = function () {
     this.mediator.subscribe('newItem', this.addNewItem);
-
+    this.mediator.subscribe('editItem', this.updateItem);
     this.formView.delegateEvent();
+
+    this.items.forEach(function (item) {
+      item.delegateEvent();
+    });
 
     return this;
   };
 
-  TodoCollectionView.prototype.updateList = function () {
+  TodoCollectionView.prototype.renderList = function () {
     var todoList = this.items || [];
-    this.container.innerHTML = todoList.map(function (item) {
+    var container = this.listContainer;
+    var createItem = this.createItemNode;
+    todoList.forEach(function (item) {
       console.log('---->', item.model);
-      return mustache.render(todoItemTemplate, item.model);
-    }).join('');
-
+      container.appendChild(createItem(mustache.render(todoItemTemplate, item.model), item.model.id));
+    });
 
     return this;
   };
 
   TodoCollectionView.prototype.render = function () {
     this.fetchData();
-    this.setMediator();
+    this.renderList();
     this.delegateEvent();
-    this.updateList();
 
     return this;
   };
-
 
   return TodoCollectionView;
 });
