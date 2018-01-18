@@ -4,7 +4,7 @@ define(function () {
   var TodoItemModel = function (options) {
     this.title = options.title || '';
     this.description = options.description || '';
-    this.id = (options.id === undefined) ? id: options.id ;
+    this.id = (options.id === undefined) ? id : options.id;
     this.state = options.state || this.constants.state.NEW;
     this.html = this.getHTML();
 
@@ -12,6 +12,7 @@ define(function () {
     console.log('---->', this.id);
 
     this.getHTML = this.getHTML.bind(this);
+    this.isSelected = this.isSelected.bind(this);
   };
 
   TodoItemModel.prototype.constants = {
@@ -60,6 +61,14 @@ define(function () {
           className: this.constants.className.ARCHIVED,
           innerHTML: this.constants.innerHTML.ARCHIVED
         };
+      }
+    }
+  };
+
+  TodoItemModel.prototype.isSelected = function () {
+    return function (text, render) {
+      if (render(text) === this.state) {
+        return 'selected';
       }
     }
   };

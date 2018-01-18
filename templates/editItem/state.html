@@ -1,6 +1,6 @@
 <select class="custom-select edit-state">
-  <option value="new">New</option>
-  <option value="in-progress">In progress</option>
-  <option value="completed">Completed</option>
-  <option value="archived">Archived</option>
+  <option value="new" {{#isSelected}}new{{/isSelected}}>New</option>
+  <option value="in-progress" {{#isSelected}}in-progress{{/isSelected}}>In progress</option>
+  <option value="completed" {{#isSelected}}completed{{/isSelected}}>Completed</option>
+  <option value="archived" {{#isSelected}}archived{{/isSelected}}>Archived</option>
 </select>
