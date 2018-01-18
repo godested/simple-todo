@@ -1,6 +1,10 @@
-define(['app/models/TodoItem'], function (TodoItemModel) {
+define([
+  'app/models/TodoItem',
+  'app/utils/Mediator'
+], function (TodoItemModel, Mediator) {
   var TodoCollectionModel = function () {
     this.items = [];
+    this.mediator = new Mediator();
   };
 
   TodoCollectionModel.prototype.addItem = function (item) {
