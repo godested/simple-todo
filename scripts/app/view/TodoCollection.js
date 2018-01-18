@@ -1,16 +1,18 @@
 define([
-  'app/models/TodoCollection',
-  'app/models/TodoItem',
+  'app/view/TodoItem',
   'app/view/TodoForm',
   'lib/text!templates/todoItem/todoItem.html',
-  'lib/mustache.min'
-], function (TodoCollectionModel,
-             TodoItemModel,
-             TodoFormView, todoItemTemplate,
-             mustache) {
+  'lib/mustache.min',
+  'app/utils/Mediator'
+], function (TodoItemView,
+             TodoFormView,
+             todoItemTemplate,
+             mustache,
+             Mediator) {
 
   var TodoCollectionView = function () {
-    this.model = new TodoCollectionModel();
+    this.items = [];
+    this.mediator = new Mediator();
     this.formView = new TodoFormView();
     this.container = document.querySelector('.todo__container');
 
@@ -23,57 +25,61 @@ define([
   };
 
   TodoCollectionView.prototype.fetchData = function () {
+    console.log('---->', 'fetch');
     var data = JSON.parse(localStorage.getItem('todoItems')) || [];
-    this.model.items = data.map(function (item) {
-      return new TodoItemModel(item);
+    this.items = data.map(function (item) {
+      return new TodoItemView(item.model);
     });
 
     return this;
   };
 
   TodoCollectionView.prototype.saveData = function () {
-    localStorage.setItem('todoItems', JSON.stringify(this.model.items) || []);
+    console.log('---->', 'saving', this.items);
+    localStorage.setItem('todoItems', JSON.stringify(this.items) || []);
+
 
     return this;
   };
 
   TodoCollectionView.prototype.setMediator = function () {
-    this.formView.mediator = this.model.mediator;
+    this.formView.mediator = this.mediator;
 
     return this;
   };
 
-  TodoCollectionView.prototype.addNewItem = function (ev, data) {
-    console.log('---->', data);
-    this.model.items.push(new TodoItemModel(data));
+  TodoCollectionView.prototype.addNewItem = function (ev, item) {
+    this.items.push(new TodoItemView(item));
 
-    this.updateContent();
+    this.updateList();
+    this.saveData();
     return this;
   };
 
   TodoCollectionView.prototype.delegateEvent = function () {
-    this.setMediator();
-    this.model.mediator.subscribe('newItem', this.addNewItem);
+    this.mediator.subscribe('newItem', this.addNewItem);
 
     this.formView.delegateEvent();
 
     return this;
   };
 
-  TodoCollectionView.prototype.updateContent = function () {
-    this.saveData();
-    this.fetchData();
-    var todoList = this.model.items || [];
+  TodoCollectionView.prototype.updateList = function () {
+    var todoList = this.items || [];
     this.container.innerHTML = todoList.map(function (item) {
-      return mustache.render(todoItemTemplate, item);
+      console.log('---->', item.model);
+      return mustache.render(todoItemTemplate, item.model);
     }).join('');
+
+
+    return this;
   };
 
   TodoCollectionView.prototype.render = function () {
     this.fetchData();
-    this.updateContent();
-
+    this.setMediator();
     this.delegateEvent();
+    this.updateList();
 
     return this;
   };

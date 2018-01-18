@@ -10,13 +10,15 @@ define(function () {
 
   TodoFormView.prototype.parseData = function (ev) {
     ev.preventDefault();
-    var data = {
+    var item = {
       title: this.title.value,
       description: this.description.value
     };
 
+    this.title.value = null;
+    this.description.value = null;
 
-    this.mediator.notify('newItem', data);
+    this.mediator.notify('newItem', item);
   };
 
   TodoFormView.prototype.delegateEvent = function () {
