@@ -63,7 +63,6 @@ define([
 
   TodoCollectionView.prototype.createItemNode = function (html, id) {
     var item = document.createElement('tr');
-    console.log('---->', )
     item.className = 'todo__item task task-' + id + ' state-' + this.items[id].model.state;
     item.innerHTML = html;
 
